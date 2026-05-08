@@ -1,4 +1,5 @@
 
+import 'package:app_blog/app/modules/create_post/controllers/create_post_controller.dart';
 import 'package:app_blog/app/modules/login/controllers/login_controller.dart';
 import 'package:app_blog/app/providers/api_provider.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class DependencyInjection {
     Get.put(ApiProvider());
     Get.put(LocalStorageService());
     Get.put(LoginController());
+    Get.put(CreatePostController());
     Get.put(AuthService(),permanent: true);
   }
 }

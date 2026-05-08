@@ -8,10 +8,11 @@ class HomeController extends GetxController {
   final _provider = Get.find<ApiProvider>();
   Rx<PostModel> post =  Rx<PostModel>(PostModel());
   var isloading = false.obs;
+  var currentIndex = 0.obs;
 
   @override
   void onInit() {
-    fetchPost();
+    getPost();
     super.onInit();
   }
 
@@ -33,7 +34,7 @@ class HomeController extends GetxController {
 
     }
   }
-  void fetchPost()async{
+  void getPost()async{
     try{
       isloading(true);
       final res = await _provider.getPost();
@@ -50,4 +51,8 @@ class HomeController extends GetxController {
       isloading(false);
     }
   }
+  void changeTabIndex(int index) {
+    currentIndex.value = index;
+  }
+
 }

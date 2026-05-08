@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'package:app_blog/app/servies/auth_service.dart';
 import 'package:app_blog/app/servies/local_storage_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../providers/api_provider.dart';
+import '../../home/controllers/home_controller.dart';
 
 class CreatePostController extends GetxController {
   Rx<File> image = Rx<File>(File(''));
@@ -18,8 +16,11 @@ class CreatePostController extends GetxController {
     final _file = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (_file != null) {
       image.value = File(_file.path);
-      // validateForm();
+
     }
+  }
+  void clearFields() {
+    image.value = File('');
   }
   void createPost({required String title, required String body}) async {
    final userID = await LocalStorageService.getUid();
@@ -32,7 +33,11 @@ class CreatePostController extends GetxController {
         int.parse(userID!),
       );
       if (response.statusCode == 200) {
-        Get.back(result: true);
+        var homeController = Get.find<HomeController>();
+        clearFields();
+        homeController.changeTabIndex(0);
+        homeController.getPost();
+        Get.back(result: true,);
         return;
       }
       throw Exception(response.data['message']);
